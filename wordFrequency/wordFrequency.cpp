@@ -41,6 +41,7 @@ wstring prepare(const wstring& word)
 	/*
 	чем вам find_first_of , find_last_of не понравились?
 	это же то же самое, что и ваши циклы ниже, но название описывает намерения разработчика
+	... мы не говорили про lambd'ы ... отбой, оставляем так
 	*/
 	while (start < len && !std::iswalpha(result[start]))
 		start++;
