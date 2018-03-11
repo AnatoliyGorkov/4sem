@@ -77,6 +77,11 @@ double Vector3::squareLen() const
 
 double Vector3::len() const
 {
+	/*
+	лучше просто:
+	return std::sqrt(squareLen());
+	в некоторых случаях без this можно обойтись
+	*/
 	return std::sqrt((*this).squareLen());
 }
 
