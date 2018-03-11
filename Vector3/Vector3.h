@@ -3,6 +3,10 @@
 #include <cmath>
 #include <limits>
 #include <algorithm>
+/*
+лучше писать ровно те инклюды, которые нужны в текущем файле.
+например, limits вам в данном файле не нужно
+*/
 
 class Vector3
 {
@@ -34,9 +38,11 @@ public:
 	double angle(const Vector3& other) const;	//return angle (in radians) between the vectors, if one of vectors is 0, 0 is returned
 	friend std::ostream& operator<<(std::ostream& stream, const Vector3& v);	//output format: (x y z)
 	friend std::istream& operator>>(std::istream& stream, Vector3& v);
-
 };
 
 bool almostEqual(double lhs, double rhs);	//used for comparison of doubles
 
-
+/*
+fixit: вы сделали поля структуры x,y,z публичными и смысла объявлять кого-то друзьями уже нет.
+можно просто вынести вынести их объявление вне структуры (рядом с almostEqual)
+*/
