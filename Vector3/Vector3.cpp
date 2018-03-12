@@ -1,4 +1,7 @@
 ﻿#include "Vector3.h"
+#include <limits>
+#include <algorithm>
+#include <cmath>
 
 Vector3::Vector3() :
 	x(0),
@@ -77,22 +80,12 @@ double Vector3::squareLen() const
 
 double Vector3::len() const
 {
-	/*
-	лучше просто:
 	return std::sqrt(squareLen());
-	в некоторых случаях без this можно обойтись
-	*/
-	return std::sqrt((*this).squareLen());
 }
 
 Vector3 & Vector3::norm()
 {
 	double len = (*this).len();
-	/*
-	fixit:
-	Лучше не сравнивать явно с нулем.
-	http://ru.cppreference.com/w/cpp/types/numeric_limits/epsilon
-	*/
 	if (almostEqual(len, 0.0))
 		return (*this);
 	x /= len;
