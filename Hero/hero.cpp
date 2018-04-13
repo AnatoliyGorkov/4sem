@@ -23,6 +23,10 @@ void normalize(sf::Vector2f& vector)
 	vector.y /= len;
 }
 
+/*
+в общем случае лучше конечно структуры передавать через const& по возможности.
+в данном случае скорее всего sf::Time довольно маленькая, но всё же
+*/
 void moveBullets(std::vector<Bullet>& bullets, sf::Time elapsed)
 {
 	for (auto& bullet : bullets)
@@ -31,11 +35,13 @@ void moveBullets(std::vector<Bullet>& bullets, sf::Time elapsed)
 	}
 }
 
+// ф-я назвается "нарисовать", но делает не только это
 void drawBullets(std::vector<Bullet>& bullets, sf::RenderWindow& window)
 {
 	if (bullets.empty())
 		return;
 	int i = 0;
+	// не уверен, что переменная bulletsNumber необходима, когда есть метод bullets.back()
 	int bulletsNumber = bullets.size();
 	while (i < bulletsNumber)
 	{
@@ -56,6 +62,8 @@ void drawBullets(std::vector<Bullet>& bullets, sf::RenderWindow& window)
 
 void moveHero(sf::Sprite& hero, sf::Time time, sf::RenderWindow& window)
 {
+	/* в рамках данного упражнения пойдет, конечно, но вы смешиваете код "управления" героя, и "логику"  вместе.
+	 также не стоит смешивать "логику" и "визуализацию" */
 	float heroAdjustment = time.asSeconds() * heroVelocity;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && hero.getPosition().x - heroAdjustment >= collisionRadius * heroScale)
 		hero.move(-heroAdjustment, 0);
@@ -68,6 +76,8 @@ void moveHero(sf::Sprite& hero, sf::Time time, sf::RenderWindow& window)
 
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 	sf::Vector2f center = hero.getPosition();
+	
+	// если итак ясно какой тип можно писать auto d = ...
 	sf::Vector2f d = sf::Vector2f(mousePosition.x, mousePosition.y) - center;
 
 	hero.setRotation(90 + atan2f(d.y, d.x) * 180 / pi);
@@ -84,6 +94,7 @@ int main()
 	texture.loadFromFile("Superman-256.png");
 	texture.setSmooth(true);
 
+	// можно бы инициализацию героя вынести в отдельную ф-ю
 	sf::Sprite hero(texture);
 	sf::Vector2u heroSize = hero.getTexture()->getSize();
 	hero.setOrigin(heroSize.x / 2, heroSize.y / 2);
@@ -120,7 +131,7 @@ int main()
 		
 		window.draw(hero);
 
-
+		// эти три строки кода уже встречались ранее. лучше вынести в отдельную ф-ю
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 		sf::Vector2f center = hero.getPosition();
 		sf::Vector2f d = sf::Vector2f(mousePosition.x, mousePosition.y) - center;
@@ -146,10 +157,14 @@ int main()
 		{
 			float maxScreenLen = std::sqrt(window.getSize().x * window.getSize().x + window.getSize().y * window.getSize().y);
 			sf::RectangleShape line1(sf::Vector2f(maxScreenLen, 3));
+			// обычно размер задают не в пикселях, а как некая доля от диагонали экрана, например.
+			// чтобы при смене разрешения все ок осталось 
 			sf::RectangleShape line2(sf::Vector2f(maxScreenLen, 3));
 			line1.setFillColor(sf::Color::Red);
 			line2.setFillColor(sf::Color::Red);
 			// so the lasers match the eyes
+			
+			/// можно для 65 и 42 дать осмысленные названия?
 			line1.setPosition(hero.getPosition().x + 65 * heroScale * d.x - 22 * heroScale* d.y,
 				hero.getPosition().y + 65 * heroScale* d.y + 22 * heroScale* d.x);
 
