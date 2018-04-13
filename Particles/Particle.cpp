@@ -1,5 +1,6 @@
 #include "Particle.h"
 
+// особо нет смысла писать position(Vector2()) ... ровно то же самое компилятор по умолчанию сделает
 Particle::Particle() :
 	position(Vector2()),
 	velocity(Vector2()),
@@ -18,6 +19,7 @@ Particle::Particle(const Vector2& position, const Vector2& velocity, float radiu
 
 Vector2 Particle::getImpulse()
 {
+	// return mass * velocity; ?
 	return Vector2(mass * velocity.x, mass * velocity.y);
 }
 
@@ -32,8 +34,11 @@ void Particle::draw(sf::RenderWindow& window, sf::Color color, sf::Color outline
 	window.draw(shape);
 }
 
+// моя интуиция подсказывает, что если ф-я называется check, то она должна быть 
+// константной и возвращать bool ... да/нет
 void Particle::checkCollision(const sf::RenderWindow& window, const float bounceFactor)
 {
+	// *= можно использовать
 	if (position.x < radius && velocity.x < 0)
 		velocity.x = -bounceFactor * velocity.x;
 	if (position.y < radius && velocity.y < 0)
