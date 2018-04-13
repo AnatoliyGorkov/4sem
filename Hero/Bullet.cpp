@@ -14,13 +14,18 @@ Bullet::Bullet(float x, float y, const sf::Vector2f& velocity, float size) :
 
 void Bullet::move(sf::Time time)
 {
+	// x += ... ?
 	x = x + velocity.x * time.asSeconds();
 	y = y + velocity.y * time.asSeconds();
 	shape.setPosition(x, y);
 }
 
-bool Bullet::isActive(const sf::Window & window) const
+bool Bullet::isActive(const sf::Window& window) const
 {
+	/*
+	зачем лишние строки ... сразу
+	return x >= 0 && x < windowSize.x && ... ;
+	*/
 	sf::Vector2u windowSize = window.getSize();
 	if (x < 0 ||
 		y < 0 ||
